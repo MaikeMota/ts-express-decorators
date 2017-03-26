@@ -27,9 +27,5 @@ export const EXPRESS_NEXT_FN = Symbol("next");
 export const EXPRESS_ERR = Symbol("err");
 export const EXPRESS_REQUEST = Symbol("request");
 export const EXPRESS_RESPONSE = Symbol("response");
-
-export const MULTIPARTFILE = Symbol("multipartFile");
-export const MULTIPARTFILES = Symbol("multipartFiles");
-
 export const RESPONSE_DATA = Symbol("responseData");
 export const ENDPOINT_INFO = Symbol("endpointInfo");

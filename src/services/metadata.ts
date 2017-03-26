@@ -87,7 +87,7 @@ export default class Metadata<T> {
      * @param propertyKey
      * @returns {any}
      */
-    static getParamTypes(target: any, propertyKey?: string): any[] {
+    static getParamTypes(target: any, propertyKey?: string | symbol): any[] {
         return Reflect.getMetadata(DESIGN_PARAM_TYPES, target, propertyKey) || [];
     }
 

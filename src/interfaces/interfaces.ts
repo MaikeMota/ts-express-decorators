@@ -19,26 +19,26 @@ export interface Type<T> extends Function {
 /**
  *
  */
-export interface IClassDecorator<T> {
+export interface IClassArgs<T> {
     target: Type<T>;
 }
 /**
  *
  */
-export interface IMethodDecorator<T> extends IClassDecorator<T> {
-    propertyKey: string;
+export interface IMethodArgs<T> extends IClassArgs<T> {
+    propertyKey: string | symbol;
 }
 /**
  *
  */
-export interface IAttributsDecorator<T> extends IClassDecorator<T> {
-    propertyKey: string;
+export interface IAttributArgs<T> extends IClassArgs<T> {
+    propertyKey: string | symbol;
 }
 /**
  *
  */
-export interface IParamsDecorator<T> extends IMethodDecorator<T> {
-    propertyIndex: number;
+export interface IParamArgs<T> extends IMethodArgs<T> {
+    parameterIndex: number;
 }
 /**
  *
@@ -159,10 +159,13 @@ export interface IControllerRoute {
  *
  */
 export interface IInjectableParamsMetadata<T> {
-
     required?: boolean;
     expression?: string | RegExp;
     useType?: Type<T>;
     baseType?: Type<T>;
     useConverter?: boolean;
+}
+
+export interface IInjectableParamSettings<T> extends IInjectableParamsMetadata<T>, IParamArgs<T> {
+
 }

@@ -15,7 +15,7 @@ import EndpointParam from "../controllers/endpoint-param";
 import ConverterService from "./converter";
 import InjectorService from "./injector";
 import FilterService from "./filter";
-import {EXPRESS_NEXT_FN, ENDPOINT_INFO, RESPONSE_DATA} from "../constants/metadata-keys";
+import {ENDPOINT_INFO, RESPONSE_DATA} from "../constants/metadata-keys";
 
 @Service()
 export default class MiddlewareService {
@@ -182,9 +182,7 @@ export default class MiddlewareService {
                 hasNextFn = type !== MiddlewareType.ERROR;
             }
         } else {
-            hasNextFn = EndpointParam
-                .getParams(target, methodName)
-                .findIndex((p) => p.service === EXPRESS_NEXT_FN) > -1;
+            hasNextFn = EndpointParam.hasNextFunction(target, methodName);
         }
 
         return {

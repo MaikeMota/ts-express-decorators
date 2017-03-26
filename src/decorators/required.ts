@@ -1,4 +1,5 @@
 import EndpointParam from "../controllers/endpoint-param";
+import {Type} from "../interfaces/interfaces";
 
 /**
  * Add required annotation for a function argument .
@@ -6,7 +7,7 @@ import EndpointParam from "../controllers/endpoint-param";
  */
 export function Required(): any {
 
-    return (target: Function, propertyKey: string | symbol, parameterIndex: number): void => {
+    return (target: Type<any>, propertyKey: string | symbol, parameterIndex: number): void => {
 
         if (typeof parameterIndex === "number") {
 

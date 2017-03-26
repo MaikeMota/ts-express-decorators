@@ -1,5 +1,6 @@
 import {EXPRESS_NEXT_FN} from "../../constants/metadata-keys";
 import EndpointParam from "../../controllers/endpoint-param";
+import {Type} from "../../interfaces/interfaces";
 
 /**
  *
@@ -8,7 +9,7 @@ import EndpointParam from "../../controllers/endpoint-param";
  */
 export function Next(): Function {
 
-    return (target: Function, propertyKey: string | symbol, parameterIndex: number): void => {
+    return (target: Type<any>, propertyKey: string | symbol, parameterIndex: number): void => {
 
         if (typeof parameterIndex === "number") {
 

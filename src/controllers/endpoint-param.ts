@@ -1,7 +1,8 @@
-import {INJECT_PARAMS} from "../constants/metadata-keys";
+import {INJECT_PARAMS, EXPRESS_NEXT_FN} from "../constants/metadata-keys";
 import Metadata from "../services/metadata";
 import {getClassName} from "../utils";
-import {IInjectableParamsMetadata, Type} from "../interfaces/interfaces";
+import {IInjectableParamsMetadata, Type, IParamArgs, IInjectableParamSettings} from "../interfaces/interfaces";
+import {inject} from "../testing/inject";
 /**
  *
  */
@@ -92,7 +93,7 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
      * @param index
      * @returns {any}
      */
-    static get(target: any, targetKey: string | symbol, index: number): EndpointParam {
+    static get(target: Type<any>, targetKey: string | symbol, index: number): EndpointParam {
 
         const params = this.getParams(target, targetKey);
 
@@ -108,7 +109,7 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
      * @param targetKey
      * @returns {Array}
      */
-    static getParams(target: any, targetKey: string | symbol): EndpointParam[] {
+    static getParams(target: Type<any>, targetKey: string | symbol): EndpointParam[] {
 
         return Metadata.has(INJECT_PARAMS, target, targetKey)
             ? Metadata.get(INJECT_PARAMS, target, targetKey)
@@ -122,7 +123,7 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
      * @param index
      * @param injectParams
      */
-    static set(target: any, targetKey: string | symbol, index: number, injectParams: EndpointParam): void {
+    static set(target: Type<any>, targetKey: string | symbol, index: number, injectParams: EndpointParam): void {
 
         const params = Metadata.has(INJECT_PARAMS, target, targetKey)
             ? Metadata.get(INJECT_PARAMS, target, targetKey)
@@ -141,26 +142,17 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
     static isInjectable = (target, method): boolean =>
         (Metadata.get(INJECT_PARAMS, target, method) || []).length > 0;
 
-
-    /**
-     *
-     * @param filterKey
-     * @param options
-     */
-    static useFilter(filterKey: Type<any>, options: any) {
-        EndpointParam.builder(filterKey, options);
-        return this;
-    }
-
     /**
      *
      * @param service
      * @param settings
      */
-    static useService(service: symbol, settings: any) {
-        const injectParams = EndpointParam.get(settings.target, settings.propertyKey, settings.parameterIndex);
-        injectParams.service = service;
-        EndpointParam.set(settings.target, settings.propertyKey, settings.parameterIndex, injectParams);
+    static useService(service: symbol, settings: IParamArgs<any>) {
+        const endpointParam = EndpointParam.get(settings.target, settings.propertyKey, settings.parameterIndex);
+        endpointParam.service = service;
+        endpointParam.useConverter = false;
+
+        EndpointParam.set(settings.target, settings.propertyKey, settings.parameterIndex, endpointParam);
         return this;
     }
 
@@ -170,12 +162,12 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
      * @param propertyKey
      * @param parameterIndex
      */
-    static required(target, propertyKey, parameterIndex) {
-        const injectParams = EndpointParam.get(target, propertyKey, parameterIndex);
+    static required(target: Type<any>, propertyKey: string | symbol, parameterIndex: number) {
+        const endpointParam = EndpointParam.get(target, propertyKey, parameterIndex);
 
-        injectParams.required = true;
+        endpointParam.required = true;
 
-        EndpointParam.set(target, propertyKey, parameterIndex, injectParams);
+        EndpointParam.set(target, propertyKey, parameterIndex, endpointParam);
         return this;
     }
 
@@ -184,7 +176,7 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
      * @param service
      * @param options
      */
-    static builder(service: Type<any>, options: any): EndpointParam {
+    static useFilter(service: Type<any>, options: IInjectableParamSettings<any>): EndpointParam {
         let {
             propertyKey,
             parameterIndex,
@@ -194,7 +186,7 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
             useConverter
         } = options;
 
-        const injectParams = EndpointParam.get(target, propertyKey, parameterIndex);
+        const endpointParam = EndpointParam.get(target, propertyKey, parameterIndex);
         const baseType = Metadata.getParamTypes(target, propertyKey)[parameterIndex];
 
         if (typeof expression !== "string") {
@@ -202,19 +194,27 @@ export default class EndpointParam implements IInjectableParamsMetadata<any> {
             expression = undefined;
         }
 
-        injectParams.service = service;
-        injectParams.expression = expression;
-        injectParams.baseType = baseType;
-        injectParams.useType = useType || baseType;
+        endpointParam.service = service;
+        endpointParam.expression = expression;
+        endpointParam.baseType = baseType;
+        endpointParam.useType = useType || baseType;
 
         if (useConverter !== undefined) {
-            injectParams.useConverter = useConverter;
+            endpointParam.useConverter = useConverter;
         }
 
-        EndpointParam.set(target, propertyKey, parameterIndex, injectParams);
+        EndpointParam.set(target, propertyKey, parameterIndex, endpointParam);
 
-        return injectParams;
+        return endpointParam;
     }
 
-
+    /**
+     *
+     * @param target
+     * @param propertyKey
+     */
+    static hasNextFunction = (target: Type<any>, propertyKey: string) =>
+        EndpointParam
+            .getParams(target, propertyKey)
+            .findIndex((p) => p.service === EXPRESS_NEXT_FN) > -1
 }

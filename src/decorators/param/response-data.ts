@@ -1,5 +1,6 @@
 import {RESPONSE_DATA} from "../../constants/metadata-keys";
 import EndpointParam from "../../controllers/endpoint-param";
+import {Type} from "../../interfaces/interfaces";
 
 /**
  *
@@ -8,7 +9,7 @@ import EndpointParam from "../../controllers/endpoint-param";
  */
 export function ResponseData(): Function {
 
-    return (target: Function, propertyKey: string | symbol, parameterIndex: number): void => {
+    return (target: Type<any>, propertyKey: string | symbol, parameterIndex: number): void => {
 
         /* istanbul ignore else */
         if (parameterIndex !== undefined) {
@@ -16,8 +17,7 @@ export function ResponseData(): Function {
             EndpointParam.useService(RESPONSE_DATA, {
                 propertyKey,
                 parameterIndex,
-                target,
-                useConverter: false
+                target
             });
 
         }

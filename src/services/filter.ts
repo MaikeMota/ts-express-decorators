@@ -2,7 +2,7 @@ import {Service} from "../decorators/class/service";
 import InjectorService from "./injector";
 import {EnvTypes, ServerSettingsService} from "./server-settings";
 import {$log} from "ts-log-debug";
-import {getClassOrSymbol} from "../utils";
+import {getClassOrSymbol, getClassName, getClass} from "../utils";
 import {Type, IFilter, IFilterProvider} from "../interfaces";
 
 @Service()
@@ -42,28 +42,28 @@ export default class FilterService {
 
     /**
      *
-     * @param key
+     * @param target
      * @returns {null}
      */
-    get = <T extends IFilter>(key: Type<T>): IFilterProvider<T> =>
-        FilterService.get<T>(key);
+    get = <T extends IFilter>(target: Type<T>): IFilterProvider<T> =>
+        FilterService.get<T>(getClass(target));
 
     /**
      *
-     * @param key
      * @returns {null}
+     * @param target
      */
-    has = (key: Type<any>): boolean =>
-        FilterService.has(key);
+    has = (target: Type<any>): boolean =>
+        FilterService.has(target);
 
     /**
      *
-     * @param key
+     * @param target
      * @param value
      * @returns {null}
      */
-    set = (key: Type<any>, value?: any): this => {
-        FilterService.set(key, value);
+    set = (target: Type<any>, value?: any): this => {
+        FilterService.set(getClass(target), value);
         return this;
     }
 
@@ -89,20 +89,20 @@ export default class FilterService {
     }
     /**
      *
-     * @param key
+     * @param target
      * @returns {null}
      */
-    static get<T extends IFilter>(key: Type<T>): IFilterProvider<T> {
-        return this.filters.get(key);
+    static get<T extends IFilter>(target: Type<T>): IFilterProvider<T> {
+        return this.filters.get(getClass(target));
     }
 
     /**
      *
-     * @param key
      * @returns {null}
+     * @param target
      */
-    static has(key: any): boolean {
-        return null;
+    static has(target: Type<any>): boolean {
+        return this.filters.has(getClass(target));
     }
 
     /**

@@ -6,6 +6,7 @@ import {HeaderFilter} from "../../filters/header";
 import {LocalsFilter} from "../../filters/locals";
 import {SessionFilter} from "../../filters/session";
 import EndpointParam from "../../controllers/endpoint-param";
+import {Type} from "../../interfaces/interfaces";
 
 /**
  *
@@ -16,7 +17,7 @@ import EndpointParam from "../../controllers/endpoint-param";
  */
 export function CookiesParams(expression?: string | any, useType?: any): Function {
 
-    return (target: Function, propertyKey: string | symbol, parameterIndex: number): void => {
+    return (target: Type<any>, propertyKey: string | symbol, parameterIndex: number): void => {
 
         if (typeof parameterIndex === "number") {
 
@@ -168,7 +169,7 @@ export function HeaderParams(expression: string) {
  */
 export function Locals(expression?: string | any): Function {
 
-    return (target: Function, propertyKey: string | symbol, parameterIndex: number): void => {
+    return (target: Type<any>, propertyKey: string | symbol, parameterIndex: number): void => {
 
         if (typeof parameterIndex === "number") {
 

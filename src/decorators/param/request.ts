@@ -1,5 +1,6 @@
 import {EXPRESS_REQUEST} from "../../constants/metadata-keys";
 import EndpointParam from "../../controllers/endpoint-param";
+import {Type} from "../../interfaces/interfaces";
 
 /**
  * Request service.
@@ -8,7 +9,7 @@ import EndpointParam from "../../controllers/endpoint-param";
  */
 export function Request(): Function {
 
-    return (target: Function, propertyKey: string | symbol, parameterIndex: number): void => {
+    return (target: Type<any>, propertyKey: string | symbol, parameterIndex: number): void => {
 
         if (typeof parameterIndex === "number") {
 

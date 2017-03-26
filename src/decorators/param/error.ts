@@ -1,5 +1,6 @@
 import {EXPRESS_ERR} from "../../constants/metadata-keys";
 import EndpointParam from "../../controllers/endpoint-param";
+import {Type} from "../../interfaces/interfaces";
 
 /**
  *
@@ -8,15 +9,14 @@ import EndpointParam from "../../controllers/endpoint-param";
  */
 export function Err(): Function {
 
-    return (target: Function, propertyKey: string | symbol, parameterIndex: number): void => {
+    return (target: Type<any>, propertyKey: string | symbol, parameterIndex: number): void => {
 
         if (typeof parameterIndex === "number") {
 
             EndpointParam.useService(EXPRESS_ERR, {
                 propertyKey,
                 parameterIndex,
-                target,
-                useConverter: false
+                target
             });
 
         }

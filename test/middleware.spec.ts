@@ -311,12 +311,12 @@ describe('MiddlewareService : ', () => {
 
             it('should bind a middleware decorated', inject([MiddlewareService, Done], (middlewareService, done) => {
 
-                const request: any = {test: 'less'}, response: any = {};
+                const request: any = {test: 'test'}, response: any = {};
 
                 const next = (e) => {
                     expect(request).to.be.an('object');
                     expect(request.test).to.equal('test');
-                    done()
+                    done();
                 };
 
                 const wrappedMdlw = middlewareService.bindMiddleware(MiddlewareInjTest);
@@ -327,13 +327,14 @@ describe('MiddlewareService : ', () => {
                 expect(settings.type).to.equal(MiddlewareType.MIDDLEWARE);
                 expect(wrappedMdlw).to.be.a('function');
 
-                wrappedMdlw(request, response, next);
+                wrappedMdlw(request, response, next)
+                    .catch(err => console.error(err))
 
             }));
 
             it('should bind an endpoint decorated', inject([MiddlewareService, Done], (middlewareService, done) => {
 
-                const request: any = {test: 'less'}, response: any = {};
+                const request: any = {test: 'test'}, response: any = {};
 
                 const next = (e) => {
                     expect(request).to.be.an('object');

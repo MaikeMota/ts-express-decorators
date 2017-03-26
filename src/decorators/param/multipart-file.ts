@@ -4,10 +4,11 @@ import MultipartFileMiddleware from "../../middlewares/multipart-file";
 import Metadata from "../../services/metadata";
 import {MultipartFileFilter, MultipartFilesFilter} from "../../filters/multipart-file";
 import EndpointParam from "../../controllers/endpoint-param";
+import {Type} from "../../interfaces/interfaces";
 
 export function MultipartFile(options?: any): Function {
 
-    return <T> (target: Function, propertyKey: string, parameterIndex: number): void => {
+    return <T> (target: Type<T>, propertyKey: string, parameterIndex: number): void => {
 
         if (typeof parameterIndex === "number") {
 
