@@ -1,5 +1,4 @@
-
-import InjectParams from "../services/inject-params";
+import EndpointParam from "../controllers/endpoint-param";
 
 /**
  * Add required annotation for a function argument .
@@ -11,11 +10,7 @@ export function Required(): any {
 
         if (typeof parameterIndex === "number") {
 
-            const injectParams = InjectParams.get(target, propertyKey, parameterIndex);
-
-            injectParams.required = true;
-
-            InjectParams.set(target, propertyKey, parameterIndex, injectParams);
+            EndpointParam.required(target, propertyKey, parameterIndex);
 
         }
 

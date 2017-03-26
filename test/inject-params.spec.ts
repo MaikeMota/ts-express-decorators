@@ -1,35 +1,35 @@
 import Chai = require("chai");
-import InjectParams from '../src/services/inject-params';
 import {EXPRESS_REQUEST} from '../src/constants/metadata-keys';
+import EndpointParam from "../src/controllers/endpoint-param";
 const expect: Chai.ExpectStatic = Chai.expect;
 
-class TestInjectParams{
+class TestEndpointParam{
     method(arg1, arg2){}
 }
 
-describe('InjectParams :', () => {
+describe('EndpointParam :', () => {
 
     it('should get instance of injectParams', () => {
 
-        const injectParams = InjectParams.get(TestInjectParams, 'method', 0);
+        const injectParams = EndpointParam.get(TestEndpointParam, 'method', 0);
 
-        expect(injectParams).to.be.instanceOf(InjectParams);
+        expect(injectParams).to.be.instanceOf(EndpointParam);
 
     });
 
     it('should set info', () => {
 
-        const injectParams = InjectParams.get(TestInjectParams, 'method', 0);
+        const injectParams = EndpointParam.get(TestEndpointParam, 'method', 0);
 
-        expect(injectParams).to.be.instanceOf(InjectParams);
+        expect(injectParams).to.be.instanceOf(EndpointParam);
 
         injectParams.expression = "test";
         injectParams.service = EXPRESS_REQUEST;
 
-        InjectParams.set(TestInjectParams, 'method', 0, injectParams);
+        EndpointParam.set(TestEndpointParam, 'method', 0, injectParams);
 
 
-        const injectParamsStored = InjectParams.get(TestInjectParams, 'method', 0);
+        const injectParamsStored = EndpointParam.get(TestEndpointParam, 'method', 0);
 
         expect(injectParamsStored.service).to.equal(injectParams.service);
         expect(injectParamsStored.expression).to.equal(injectParams.expression);
