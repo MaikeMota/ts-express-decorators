@@ -158,12 +158,7 @@ export class Endpoint {
         if (!response.headersSent) {
             response.setHeader("X-Managed-By", "TS-Express-Decorators");
         }
-
-        /* istanbul ignore next */
-        if (request.method === "POST") { // TODO remove that in future version
-            response.status(201);
-        }
-
+        
         request.getEndpoint = () => this;
 
         request.storeData = function(data) {
