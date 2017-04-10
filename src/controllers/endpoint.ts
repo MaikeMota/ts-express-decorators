@@ -158,7 +158,7 @@ export class Endpoint {
         if (!response.headersSent) {
             response.setHeader("X-Managed-By", "TS-Express-Decorators");
         }
-        
+
         request.getEndpoint = () => this;
 
         request.storeData = function(data) {
