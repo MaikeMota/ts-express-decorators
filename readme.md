@@ -182,7 +182,7 @@ export class CalendarCtrl {
     }
     
     @Authenticated()
-    @BodyParamsRequired("calendar.name")  // Throw Bad Request (400) if the request.body.calendar.name isn't provided 
+    @Required() @BodyParams("calendar.name")  // Throw Bad Request (400) if the request.body.calendar.name isn't provided 
     @Post("/")
     public post(
         @BodyParams("calendar") calendar: ICalendar
