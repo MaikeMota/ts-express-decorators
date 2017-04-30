@@ -1,27 +1,19 @@
 import {
-    Controller, Get, Post, Put, Delete,
-    PathParams, Request, Response,
-    BodyParams, Required, Use, Header, Next, Authenticated,
-    CookiesParams, QueryParams,
-    RouterController
-} from "../../../../src/index";
+    Authenticated, BodyParams, ContentType, Controller, CookiesParams, Delete, Get, Header, Locals, MultipartFile, Next,
+    PathParams, Post, Put, QueryParams, Request, Required, Response, RouterController, Status, Use, UseAfter
+} from "../../../../src";
 
 import {$log} from "ts-log-debug";
 import * as Express from "express";
 import {EventCtrl} from "./EventCtrl";
-import {MongooseService} from "../../services/MongooseService"
-import {ContentType} from "../../../../src/decorators/method/content-type";
-import {UseAfter} from "../../../../src/decorators/method/use-after";
-import {Status} from "../../../../src/decorators/method/status";
-import {MultipartFile} from "../../../../src/decorators/param/multipart-file";
-import {Locals} from "../../../../src/decorators/param/params";
+import {MongooseService} from "../../services/MongooseService";
 
 interface ICalendar {
     id: string;
     name: string;
 }
 /**
- * Add @Controller annotation to declare your class as Router controller. The first param is the global path for your controller.
+ * Add @ControllerMetadata annotation to declare your class as Router controller. The first param is the global path for your controller.
  * The others params is the controller dependencies.
  *
  * In this case, EventCtrl is a depedency of CalendarCtrl. All routes of EventCtrl will be mounted on the `/calendars` path.
@@ -90,7 +82,7 @@ export class CalendarCtrl {
      * Example of customised call. You can use decorators to inject express object like `response` as `@Response`,
      * `request` as `@Request` and `next` as `@Next`.
      *
-     * Another decorator are available to access quickly to the pathParams request. `@PathParams` take an expression in
+     * Another decorators are available to access quickly to the pathParams request. `@PathParams` take an expression in
      * first parameter.
      *
      * @param request
@@ -212,7 +204,7 @@ export class CalendarCtrl {
         return {id: id, name: "test"};
     }
 
-    @Get('/middlewares')
+    @Get('/mvc')
     @Authenticated()
     @Use(CalendarCtrl.middleware)
     public testStackMiddlewares (
@@ -260,7 +252,7 @@ export class CalendarCtrl {
     }
 
     /**
-     * Test the Header decorator.
+     * Test the Header decorators.
      * @param request
      * @returns {{id: any, name: string}}
      */

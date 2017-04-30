@@ -1,10 +1,9 @@
-
 import * as Express from "express";
 import {$log} from "ts-log-debug";
 import {ServerLoader} from "../../src/index";
-import Path = require("path");
 import TestAcceptMimeMiddleware from "./middlewares/acceptmime";
-import {ServerSettings} from "../../src/decorators/class/server-settings";
+import {ServerSettings} from "../../src/server/decorators/serverSettings";
+import Path = require("path");
 
 $log.setPrintDate(true);
 

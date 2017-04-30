@@ -1,6 +1,5 @@
-import {Controller, Get, Post, Put, Delete, Response, Head,Patch} from "../../../../src/index";
-import {BodyParams} from '../../../../src/decorators/param/params';
-import {EventModel} from '../../models/Event';
+import {BodyParams, Controller, Delete, Get, Head, Patch, Post, Put, Response} from "../../../../src/index";
+import {EventModel} from "../../models/Event";
 
 
 interface IEvent{
