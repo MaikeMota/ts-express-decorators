@@ -1,11 +1,14 @@
 /**
  * @module filters
  */
+/** */
 
 import {Filter} from "../decorators/filter";
 import {IFilter} from "../interfaces/index";
 import {ParseService} from "../services/ParseService";
-
+/**
+ * @private
+ */
 @Filter()
 export class LocalsFilter implements IFilter {
 

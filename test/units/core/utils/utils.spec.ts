@@ -1,4 +1,4 @@
-import {getClass} from "../../../src";
+import {getClass} from "../../../../src";
 import * as Chai from "chai";
 
 const expect: Chai.ExpectStatic = Chai.expect;
@@ -32,9 +32,6 @@ class Test2{
 
     }
 }
-
-
-
 
 describe('Utils :', () => {
 

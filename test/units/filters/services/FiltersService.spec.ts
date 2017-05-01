@@ -1,15 +1,15 @@
 import {expect} from "chai";
-import {FakeRequest} from "../../helper";
-import {inject} from "../../../src/testing";
-import {HeaderFilter} from "../../../src/filters/components/HeaderFilter";
-import {FakeResponse} from "../../helper/FakeResponse";
-import {BodyParamsFilter} from "../../../src/filters/components/BodyParamsFilter";
-import {CookiesParamsFilter} from "../../../src/filters/components/CookiesParamsFilter";
-import {PathParamsFilter} from "../../../src/filters/components/PathParamsFilter";
-import {SessionFilter} from "../../../src/filters/components/SessionFilter";
-import {MultipartFileFilter, MultipartFilesFilter} from "../../../src/filters/components/MultipartFileFilter";
-import {QueryParamsFilter} from "../../../src/filters/components/QueryParamsFilter";
-import {FilterService} from "../../../src";
+import {FakeRequest} from "../../../helper";
+import {inject} from "../../../../src/testing";
+import {HeaderFilter} from "../../../../src/filters/components/HeaderFilter";
+import {FakeResponse} from "../../../helper/FakeResponse";
+import {BodyParamsFilter} from "../../../../src/filters/components/BodyParamsFilter";
+import {CookiesParamsFilter} from "../../../../src/filters/components/CookiesParamsFilter";
+import {PathParamsFilter} from "../../../../src/filters/components/PathParamsFilter";
+import {SessionFilter} from "../../../../src/filters/components/SessionFilter";
+import {MultipartFileFilter, MultipartFilesFilter} from "../../../../src/filters/components/MultipartFileFilter";
+import {QueryParamsFilter} from "../../../../src/filters/components/QueryParamsFilter";
+import {FilterService} from "../../../../src";
 
 describe('RequestService :', function() {
 

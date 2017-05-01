@@ -1,5 +1,5 @@
 /**
- * @modules core
+ * @module core
  */ /** */
 
 /**
