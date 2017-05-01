@@ -3,13 +3,14 @@
  */
 /** */
 import {Service} from "../../di/decorators/service";
-import {getClassName, isArrayOrArrayClass, isEmpty, isPrimitiveOrPrimitiveClass} from "../../core/utils";
-import {CONVERTER_DESERIALIZE, CONVERTER_SERIALIZE} from "../../core/constants/errors-msgs";
+import {isArrayOrArrayClass, isEmpty, isPrimitiveOrPrimitiveClass} from "../../core/utils";
 import {BadRequest} from "ts-httpexceptions";
 import {InjectorService} from "../../di";
 import {Metadata} from "../../core/class/Metadata";
 import {IConverter, IJsonMetadata} from "../interfaces/index";
 import {CONVERTER, JSON_PROPERTIES} from "../constants/index";
+import {ConverterDeserializationError} from "../errors/ConverterDeserializationError";
+import {ConverterSerializationError} from "../errors/ConverterSerializationError";
 
 @Service()
 export class ConverterService {
@@ -68,11 +69,7 @@ export class ConverterService {
 
         } catch (err) {
             /* istanbul ignore next */
-            (() => {
-                const castedError = new Error(CONVERTER_SERIALIZE(getClassName(obj), obj));
-                castedError.stack = err.stack;
-                throw castedError;
-            })();
+            throw new ConverterSerializationError(obj, err);
         }
 
         /* istanbul ignore next */
@@ -162,11 +159,7 @@ export class ConverterService {
                 throw new BadRequest(err.message);
             } else {
                 /* istanbul ignore next */
-                (() => {
-                    const castedError = new Error(CONVERTER_DESERIALIZE(getClassName(targetType), obj) + "\n" + err.message);
-                    castedError.stack = err.stack;
-                    throw castedError;
-                })();
+                throw new ConverterDeserializationError(targetType, obj, err);
             }
 
         }

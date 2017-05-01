@@ -2,7 +2,6 @@
  * @module mvc
  */ /** */
 
-import {BadRequest} from "ts-httpexceptions";
 import {$log} from "ts-log-debug";
 
 import {EnvTypes, getClass, Type} from "../../core";
@@ -18,7 +17,9 @@ import {ConverterService} from "../../converters";
 import {FilterService} from "../../filters";
 import {EndpointParam} from "../class/EndpointParam";
 import {ENDPOINT_INFO, RESPONSE_DATA} from "../constants/index";
-import {BAD_REQUEST, BAD_REQUEST_REQUIRED} from "../../core/constants/errors-msgs";
+import {ParseExpressionError} from "../errors/ParseExpressionError";
+import {RequiredParamError} from "../errors/RequiredParamError";
+import {CastedError} from "../../core/errors/CastedError";
 
 /**
  *
@@ -343,7 +344,7 @@ export class MiddlewareService {
                 }
 
                 if (param.required && (paramValue === undefined || paramValue === null)) {
-                    throw new BadRequest(BAD_REQUEST_REQUIRED(param.name, param.expression));
+                    throw new RequiredParamError(param.name, param.expression);
                 }
 
                 try {
@@ -356,14 +357,10 @@ export class MiddlewareService {
 
                     /* istanbul ignore next */
                     if (err.name === "BAD_REQUEST") {
-                        throw new BadRequest(BAD_REQUEST(param.name, param.expression) + " " + err.message);
+                        throw new ParseExpressionError(param.name, param.expression, err.message);
                     } else {
                         /* istanbul ignore next */
-                        (() => {
-                            const castedError = new Error(err.message);
-                            castedError.stack = err.stack;
-                            throw castedError;
-                        })();
+                        throw new CastedError(err);
                     }
                 }
 

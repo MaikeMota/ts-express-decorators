@@ -7,7 +7,6 @@ import {ExpressApplication} from "../../core/services/ExpressApplication";
 import {$log} from "ts-log-debug";
 import {getClassName} from "../../core/utils";
 import {InjectorService} from "../../di/services/InjectorService";
-import {CYCLIC_REF, UNKNOW_CONTROLLER} from "../../core/constants/errors-msgs";
 import {Inject} from "../../di/decorators/inject";
 import {RouterController} from "./RouterController";
 import {Metadata} from "../../core/class/Metadata";
@@ -18,6 +17,9 @@ import {SendResponseMiddleware} from "../components/SendResponseMiddleware";
 import {IControllerRoute} from "../interfaces/ControllerRoute";
 import {EndpointParam} from "../class/EndpointParam";
 import {CONTROLLER_DEPEDENCIES, CONTROLLER_SCOPE, CONTROLLER_URL} from "../constants";
+import {UnknowControllerError} from "../errors/UnknowControllerError";
+import {Type} from "../../core/interfaces/Type";
+import {CyclicReferenceError} from "../errors/CyclicReferenceError";
 
 /**
  * ControllerService manage all controllers declared with `@ControllerMetadata` decorators.
@@ -221,14 +223,12 @@ export class ControllerService {
 
         currentCtrl.dependencies = currentCtrl
             .dependencies
-            .map((dep: string | Function) => {
+            .map((dep: string | Type<any>) => {
 
                 const ctrl = ControllerService.get(<string | Function>dep);
 
                 if (ctrl === undefined) {
-                    throw new Error(UNKNOW_CONTROLLER(
-                        typeof dep === "string" ? dep : getClassName(dep)
-                    ));
+                    throw new UnknowControllerError(dep);
                 }
 
                 ctrl.parent = currentCtrl;
@@ -236,10 +236,10 @@ export class ControllerService {
                 // PREVENT CYCLIC REFERENCES
                 /* istanbul ignore next */
                 if (ctrl.parent === currentCtrl && currentCtrl.parent === ctrl) {
-                    throw new Error(CYCLIC_REF(
+                    throw new CyclicReferenceError(
                         ctrl.getName(),
                         currentCtrl.getName()
-                    ));
+                    );
                 }
 
                 return ctrl;
