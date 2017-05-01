@@ -7,7 +7,7 @@
   "scripts": {
     "prepublish": "npm run tsc:compile",
     "tslint": "tslint ./src/*.ts",
-    "test": "NODE_ENV=test mocha $NODE_DEBUG_OPTION",
+    "test": "npm run tsc && NODE_ENV=test mocha $NODE_DEBUG_OPTION",
     "test:cov": "NODE_ENV=test nyc npm test",
     "test:travis": "NODE_ENV=test nyc --reporter=text-lcov npm test | coveralls",
     "tsc": "tsc",
