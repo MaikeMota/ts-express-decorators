@@ -1,5 +1,4 @@
 import * as SuperTest from "supertest";
-import {$log} from "ts-log-debug";
 import * as Express from "express";
 import {ServerSettings} from "../../src/server/decorators/serverSettings";
 import {ServerLoader} from "../../src/server/components/ServerLoader";
@@ -77,11 +76,11 @@ export class FakeApplication extends ServerLoader {
 
     static getInstance(done?: Function): FakeApplication {
 
-        $log.setRepporting({
+        /*$log.setRepporting({
             debug: false,
             info: false,
             error: false
-        });
+         });*/
 
         if (FakeApplication.Server === undefined){
             FakeApplication.Server = new FakeApplication();
